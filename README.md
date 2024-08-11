@@ -1,5 +1,6 @@
 # 시작하기 전 알아야할 것 
 
+
 ## install 
 
     pip install fastapi 'uvicorn[standard]'
@@ -19,16 +20,16 @@ app: the object created inside of main.py with the line app = FastAPI().
 
 ## docs
 
-- swagger
+### swagger
 
-        호스트주소:port/docs
+    호스트주소:port/docs
 
-- 다른 docs
+### 다른 docs
 
-         호스트주소:port/redocs
+    호스트주소:port/redocs
 
--- 
 
+<br><br>
 
 # FastAPI 기능과 특징
 
@@ -56,6 +57,31 @@ async def read_item(item_id: int, q: Union[str,None] = None):
 
 <br>
 
+## 3. 쿼리 파라미터
+
+쿼리는 URL에서 ? 후에 나오고 &으로 구분되는 키-값 쌍의 집합입니다.
+
+```
+http://127.0.0.1:8000/items/?skip=0&limit=10
+```
+
+함수의 매개변수 형태로 사용하며, `기본값 유무`를 통해 필수 파라미터 또는 기본파라미터로 나누며
+`Union`을 사용하여 선택적 파라미터로 사용할 수 도 있다.
+
+```python
+@app.get("/items/{item_id}")
+async def read_user_item(
+    item_id: str, needy: str, skip: int = 0, limit: Union[int, None] = None
+):
+    
+    #needy, 필수적인 str. = 기본 값 없음
+    #skip, 기본값이 0인 int. = 기본값 있음
+    #limit, 선택적인 int. = 선택적 파라미터, 값이 있으면 int여야하고 없으면 None
+
+    item = {"item_id": item_id, "needy": needy, "skip": skip, "limit": limit}
+    return item
+
+```
 
 
 
