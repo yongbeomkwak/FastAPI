@@ -6,6 +6,7 @@ def add(a,b):
 
 class ItemDTO(BaseModel):
     name: str
+    description: str | None = None
     price: float
-    is_offer: Union[bool, None] = None
+    tax: float | None = None
 

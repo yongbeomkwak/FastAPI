@@ -83,6 +83,56 @@ async def read_user_item(
 
 ```
 
+다양한 검증 예시
+
+```
+http://127.0.0.1:8000/items/?item-query=fixedquery&size=1
+```
+
+```python
+## 쿼리 파라미터 다양한 검증
+@app.get("/items/")
+async def read_items(
+    q: Union[str, None] = Query(
+        default=None, # 기본 값 
+        alias="item-query", # 유저가 요청할 때 쓰일 별칭 값 
+        title="임시 타이틀", # 
+        description="Query string for the items to search in the database that have a good match", # 설명
+        min_length=3, # 최소 길이
+        max_length=50, # 최대 길이
+        pattern="^fixedquery$", # 패턴 설정
+        # deprecated=True, # swagger에 deprecated 표시
+    ),
+    size: float = Query(gt=0, lt=10.5)  # gt, ge, lt, le
+
+):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+```
+
+
+
+
+
+## 4. Request Body 
+
+Path + Body + Query Parameter 
+
+```python
+
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: ItemDTO, q: str | None = None):
+    print(item_id, item, q)
+    result = {"item_id": item_id}
+    if q:
+        result.update({"q": q})
+    return result
+
+```
+
+
 
 
 ## 참고
