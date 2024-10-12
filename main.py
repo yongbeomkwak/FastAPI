@@ -59,4 +59,15 @@ async def read_all_mail(user_id: int, isDesc: bool):
     else:
         return {"mail" : "아무 메일도 없습니다."}
 
+@app.post("/items")
+async def create_item(item: ItemDTO):
+    print(f"도착한 Body 데이터: {item}")
+    return item
+
+@app.post("/items/{item_id}")
+async def update(item_id: int, item: ItemDTO, q: str | None = None):
+    result = {"item_id" : item_id, **item.dict()}
+    if q: # name = "Hello"
+        result.update({"q" : q})
+    return result
 
